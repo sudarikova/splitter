@@ -1,0 +1,39 @@
+# -*- coding: utf-8 -*-
+
+import codecs
+import re
+
+def list_tokens(text_1):
+##    f = codecs.open('test.txt', 'r', 'utf-8')
+##    a = f.read()
+    text = re.sub('\r\n+?', ' ', text_1, flags = re.U)
+    text = re.sub(' +?', ' ', text, flags = re.U)
+    text = re.sub(u'( [А-ЯЁ] )\.', u' \1Ѯ', text, flags = re.U)
+    tokens = text.split(' ')
+    return tokens
+
+def sent(arr):
+    tokens = []
+    for i in range(0, len(arr)):
+        tokens.append(arr[i])
+        if arr[i] in '.?!':
+            if i < len(arr) - 1:
+                if arr[i+1].istitle() or arr[i+1].isupper():
+                    tokens.append('<sent>')
+    output = '\r\n'.join(tokens)
+    output = output.replace(u'ѫ', u',')
+    output = output.replace(u'ω', u':')
+    output = output.replace(u'…', u'...')
+    output = output.replace(u'ѹ', u'/')
+    output = output.replace(u'Ω', u'?')
+    output = output.replace(u'ѧ', u'.')
+    output = output.replace(u'Ѯ', u'.')
+    output = output.replace(u'<sent>', u'')
+    output = re.sub(u'\r\n\r\n\r\n', u'\r\n\r\n', output, flags = re.U)
+    w = codecs.open('tokens.txt', 'a', 'utf-8')
+    w.write(output)
+    w.close()
+    return output
+##    print output
+##    for token in tokens:
+##        print token

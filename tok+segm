@@ -45,7 +45,7 @@ def segmentation():
 
     mutual = set(endings_ours_dic.keys()) & set(endings_gold_dic.keys())
 
-    len_mutual = sum([endings_ours_dic[key] for key in endings_ours_dic])
+    len_mutual = sum([endings_ours_dic[key] for key in mutual])
 
     print len_mutual
 

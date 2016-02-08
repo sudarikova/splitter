@@ -60,38 +60,34 @@ def segmentation():
 
 segmentation()
 
-def tokenization():
-    gold = codecs.open('gold_standart.txt', 'r', 'utf-8')
-    g_d = codecs.open('golddict.json', 'w', 'utf-8')
-    d1 = {}
-    for line in gold:
-        if line[:-2] in d1:
-            d1[line[:-2]] += 1
-        else:
-            d1[line[:-2]] = 1
-    json.dump(d1, g_d, ensure_ascii=False, indent=2)
-    g_d.close()
-    o = codecs.open('mydict.json', 'w', 'utf-8')
-    our = codecs.open('tokens.txt', 'r', 'utf-8')
-    d2 = {}
-    for line in our:
-        if line[:-2] in d2:
-            d2[line[:-2]] += 1
-        else:
-            d2[line[:-2]] = 1
-   
-
-    mutual = set(d1.keys())&set(d2.keys())
-    len_mutual = sum([d2[key] for key in mutual])
-##    print len_mutual
-    len_gold = sum([d1[key] for key in d1])
-    len_ours = sum([d2[key] for key in d2])
-    precision = float(len_mutual)/float(len_ours)
-    
-    recall = float(len_mutual)/float(len_gold)
-    print u'Точность токенизации: '+ str(precision) + u' Полнота токенизации: ' +  str(recall)
-    json.dump(d2, o, ensure_ascii=False, indent=2)
-    o.close()
-    
-    
-tokenization()  
+# def tokenization():
+#     gold = codecs.open('gold_standart.txt', 'r', 'utf-8')
+#     g_d = codecs.open('golddict.json', 'w', 'utf-8')
+#     d1 = {}
+#     for line in gold:
+#         if line[:-2] in d1:
+#             d1[line[:-2]] += 1
+#         else:
+#             d1[line[:-2]] = 1
+#     json.dump(d1, g_d, ensure_ascii=False, indent=2)
+#     g_d.close()
+#     o = codecs.open('mydict.json', 'w', 'utf-8')
+#     our = codecs.open('tokens.txt', 'r', 'utf-8')
+#     d2 = {}
+#     for line in our:
+#         if line[:-2] in d2:
+#             d2[line[:-2]] += 1
+#         else:
+#             d2[line[:-2]] = 1
+#
+#     our = float(len(d2))
+#     goldn = float(len(d1))
+#     right = float(len(set(d1.keys())&set(d2.keys())))
+#     precision = right/our
+#     recall = right/goldn
+#     print u'Точность токенизации: '+ str(precision) + u' Полнота токенизации: ' +  str(recall)
+#     json.dump(d2, o, ensure_ascii=False, indent=2)
+#     o.close()
+#
+#
+# tokenization()

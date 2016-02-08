@@ -1,0 +1,71 @@
+#-*-coding:utf-8-*-
+import codecs
+import re
+import json
+from proj0102 import clear
+from tokens_sent import list_tokens
+from tokens_sent import sent
+
+def tanya_script():
+    test = codecs.open('test.txt', 'r', 'utf-8')
+    text = test.read()
+    new_text = clear(text)
+    return new_text
+
+
+
+def sasha_script():
+    text_1 = tanya_script()
+    tokens = list_tokens(text_1)
+    s = sent(tokens)
+    return s
+
+def segmentation():
+
+    gold = codecs.open('gold_standart.txt', 'r', 'utf-8')
+    a = gold.read()
+    segments = a.split(u'\r\n\r\n')
+##    print len(segments) 45
+    our_text = sasha_script()
+    seg = our_text.split(u'\r\n\r\n')
+    right = float(len(set(segments)&set(seg)))
+    our = float(len(seg))
+    gold = float(len(segments))
+    precision = right/our
+    recall = right/gold
+    print u'Точность сегментации: ' +  str(precision) + u' ' + u'Полнота сегментации: ' + str(recall)
+    
+
+segmentation()
+
+def tokenization():
+    gold = codecs.open('gold_standart.txt', 'r', 'utf-8')
+    g_d = codecs.open('golddict.json', 'w', 'utf-8')
+    d1 = {}
+    for line in gold:
+        if line[:-2] in d1:
+            d1[line[:-2]] += 1
+        else:
+            d1[line[:-2]] = 1
+    json.dump(d1, g_d, ensure_ascii=False, indent=2)
+    g_d.close()
+    o = codecs.open('mydict.json', 'w', 'utf-8')
+    our = codecs.open('tokens.txt', 'r', 'utf-8')
+    d2 = {}
+    for line in our:
+        if line[:-2] in d2:
+            d2[line[:-2]] += 1
+        else:
+            d2[line[:-2]] = 1
+
+    our = float(len(d2))
+    goldn = float(len(d1))
+    right = float(len(set(d1.keys())&set(d2.keys())))
+    precision = right/our
+    recall = right/goldn
+    print u'Точность токенизации: '+ str(precision) + u' Полнота токенизации: ' +  str(recall)
+    json.dump(d2, o, ensure_ascii=False, indent=2)
+    o.close()
+    
+    
+tokenization()    

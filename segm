@@ -1,0 +1,36 @@
+#-*-coding:utf-8-*-
+import codecs
+import re
+import json
+from proj0102 import clear
+from tokens_sent import list_tokens
+from tokens_sent import sent
+
+def tanya_script():
+    test = codecs.open('test.txt', 'r', 'utf-8')
+    text = test.read()
+    new_text = clear(text)
+    return new_text
+
+
+
+def sasha_script():
+    text_1 = tanya_script()
+    tokens = list_tokens(text_1)
+    s = sent(tokens)
+    return s
+
+def segmentation():
+
+    gold = codecs.open('gold_standart.txt', 'r', 'utf-8')
+    a = gold.read()
+    segments = a.split(u'\r\n\r\n')
+##    print len(segments) 45
+    our_text = sasha_script()
+    seg = our_text.split(u'\r\n\r\n')
+    right = float(len(set(segments)&set(seg)))
+    our = float(len(seg))
+    gold = float(len(segments))
+    precision = right/our
+    recall = right/gold
+    print recall, precision

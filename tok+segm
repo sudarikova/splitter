@@ -24,48 +24,70 @@ def segmentation():
 
     gold = codecs.open('gold_standart.txt', 'r', 'utf-8')
     a = gold.read()
-    segments = a.split(u'\r\n\r\n')
-##    print len(segments) 45
+    endings_gold = re.findall(u'\n(.*\n\n)', a, flags=re.U)
+    print len(endings_gold)
     our_text = sasha_script()
-    seg = our_text.split(u'\r\n\r\n')
-    right = float(len(set(segments)&set(seg)))
-    our = float(len(seg))
-    gold = float(len(segments))
-    precision = right/our
-    recall = right/gold
+    endings__ours = re.findall(u'\n(.*\n\n)', our_text, flags=re.U)
+    print len(endings__ours)
+    endings_gold_dic = {}
+    for token in endings_gold:
+        if token in endings_gold_dic:
+            endings_gold_dic[token] += 1
+        else:
+            endings_gold_dic[token] = 1
+
+    endings_ours_dic = {}
+    for token in endings__ours:
+        if token in endings_ours_dic:
+            endings_ours_dic[token] += 1
+        else:
+            endings_ours_dic[token] = 1
+
+    mutual = set(endings_ours_dic.keys()) & set(endings_gold_dic.keys())
+
+    len_mutual = sum([endings_ours_dic[key] for key in endings_ours_dic])
+
+    print len_mutual
+
+    len_gold = sum([endings_gold_dic[key] for key in endings_gold_dic])
+
+    len_ours = sum([endings_ours_dic[key] for key in endings_ours_dic])
+
+    precision = float(len_mutual) / float(len_ours)
+    recall = float(len_mutual) / float(len_gold)
     print u'Точность сегментации: ' +  str(precision) + u' ' + u'Полнота сегментации: ' + str(recall)
-    
+
 
 segmentation()
 
-def tokenization():
-    gold = codecs.open('gold_standart.txt', 'r', 'utf-8')
-    g_d = codecs.open('golddict.json', 'w', 'utf-8')
-    d1 = {}
-    for line in gold:
-        if line[:-2] in d1:
-            d1[line[:-2]] += 1
-        else:
-            d1[line[:-2]] = 1
-    json.dump(d1, g_d, ensure_ascii=False, indent=2)
-    g_d.close()
-    o = codecs.open('mydict.json', 'w', 'utf-8')
-    our = codecs.open('tokens.txt', 'r', 'utf-8')
-    d2 = {}
-    for line in our:
-        if line[:-2] in d2:
-            d2[line[:-2]] += 1
-        else:
-            d2[line[:-2]] = 1
-
-    our = float(len(d2))
-    goldn = float(len(d1))
-    right = float(len(set(d1.keys())&set(d2.keys())))
-    precision = right/our
-    recall = right/goldn
-    print u'Точность токенизации: '+ str(precision) + u' Полнота токенизации: ' +  str(recall)
-    json.dump(d2, o, ensure_ascii=False, indent=2)
-    o.close()
-    
-    
-tokenization()    
+# def tokenization():
+#     gold = codecs.open('gold_standart.txt', 'r', 'utf-8')
+#     g_d = codecs.open('golddict.json', 'w', 'utf-8')
+#     d1 = {}
+#     for line in gold:
+#         if line[:-2] in d1:
+#             d1[line[:-2]] += 1
+#         else:
+#             d1[line[:-2]] = 1
+#     json.dump(d1, g_d, ensure_ascii=False, indent=2)
+#     g_d.close()
+#     o = codecs.open('mydict.json', 'w', 'utf-8')
+#     our = codecs.open('tokens.txt', 'r', 'utf-8')
+#     d2 = {}
+#     for line in our:
+#         if line[:-2] in d2:
+#             d2[line[:-2]] += 1
+#         else:
+#             d2[line[:-2]] = 1
+#
+#     our = float(len(d2))
+#     goldn = float(len(d1))
+#     right = float(len(set(d1.keys())&set(d2.keys())))
+#     precision = right/our
+#     recall = right/goldn
+#     print u'Точность токенизации: '+ str(precision) + u' Полнота токенизации: ' +  str(recall)
+#     json.dump(d2, o, ensure_ascii=False, indent=2)
+#     o.close()
+#
+#
+# tokenization()

@@ -57,7 +57,7 @@ def segmentation():
     recall = float(len_mutual) / float(len_gold)
     print u'Точность сегментации: ' +  str(precision) + u' ' + u'Полнота сегментации: ' + str(recall)
     #следующая строчка распечатывает те сегменты, которые не распознались правильно
-     #   for i in set(endings_ours_dic.keys())- mutual:
+     #   for i in set(endings_ours_dic.keys())- set(endings_gold_dic.keys()) :
      #   print i
 
 

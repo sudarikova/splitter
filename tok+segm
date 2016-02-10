@@ -56,6 +56,9 @@ def segmentation():
     precision = float(len_mutual) / float(len_ours)
     recall = float(len_mutual) / float(len_gold)
     print u'Точность сегментации: ' +  str(precision) + u' ' + u'Полнота сегментации: ' + str(recall)
+    #следующая строчка распечатывает те сегменты, которые не распознались правильно
+     #   for i in set(endings_ours_dic.keys())- mutual:
+     #   print i
 
 
 segmentation()
@@ -90,6 +93,10 @@ def tokenization():
     precision = float(len_mutual)/float(len_ours)
     recall = float(len_mutual)/float(len_gold)
     print u'Точность токенизации: '+ str(precision) + u' Полнота токенизации: ' +  str(recall)
+    #следующая строчка считает токены, которые не распознались как правильные (они есть в нашем файле, но нет в голде)
+        for i in set(d2.keys())-set(d1.keys()):#что есть в голде, но нет у нас
+        print i
+    
     json.dump(d2, o, ensure_ascii=False, indent=2)
     o.close()
 
